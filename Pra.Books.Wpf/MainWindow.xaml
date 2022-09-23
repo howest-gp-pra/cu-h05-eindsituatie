@@ -8,7 +8,7 @@
         Title="Boeken"
         Loaded="Window_Loaded" 
          
-        Height="728" Width="822" WindowStartupLocation="CenterScreen">
+        Height="740" Width="830" WindowStartupLocation="CenterScreen">
     <Grid>
         <GroupBox x:Name="grpLeft" Header="Beschikbare boeken" HorizontalAlignment="Left" Height="594" Margin="10,10,0,0" VerticalAlignment="Top" Width="323">
             <Grid>
@@ -54,7 +54,7 @@
         </GroupBox>
         <GroupBox x:Name="grpDBsystems" Header="DB system" Background="Moccasin" HorizontalAlignment="Left" Height="78" Margin="10,614,0,0" VerticalAlignment="Top" Width="780">
             <Grid>
-                <RadioButton x:Name="rdbInMemory" Content="Werk met data in het geheugen"  HorizontalAlignment="Left" Height="17" Margin="10,10,0,0" VerticalAlignment="Top" Width="258" Checked="RdbInMemory_Checked"/>
+                <RadioButton x:Name="rdbInMemory" IsChecked="True" Content="Werk met data in het geheugen"  HorizontalAlignment="Left" Height="17" Margin="10,10,0,0" VerticalAlignment="Top" Width="258" Checked="RdbInMemory_Checked"/>
                 <RadioButton x:Name="rdbFromDatabase"  Content="Werk met de database" HorizontalAlignment="Left" Height="17" Margin="10,32,0,0" VerticalAlignment="Top" Width="258" Checked="RdbFromDatabase_Checked"/>
             </Grid>
         </GroupBox>

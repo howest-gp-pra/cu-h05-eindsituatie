@@ -224,6 +224,8 @@ namespace Pra.Books.Wpf
         }
         private void RdbFromDatabase_Checked(object sender, RoutedEventArgs e)
         {
+            bibService = new BookServiceDB();
+            Window_Loaded(null, null);
 
         }
         private void BtnAuthors_Click(object sender, RoutedEventArgs e)

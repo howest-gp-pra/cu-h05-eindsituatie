@@ -23,7 +23,7 @@ namespace Pra.Books.Core.Services
         }
         public IEnumerable<Author> GetAuthors()
         {
-            string sql = "select id, name from author order by name";
+            string sql = "select id, name from authors order by name";
             using (SqlConnection connection = new SqlConnection(constring))
             {
                 try
