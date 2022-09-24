@@ -226,7 +226,6 @@ namespace Pra.Books.Wpf
         {
             bibService = new BookServiceDB();
             Window_Loaded(null, null);
-
         }
         private void BtnAuthors_Click(object sender, RoutedEventArgs e)
         {

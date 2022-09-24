@@ -52,7 +52,6 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
-
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
             string sql = "Select * from books";
@@ -123,7 +122,6 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
-
         public bool AddAuthor(Author author)
         {
             using (SqlConnection connection = new SqlConnection(constring))
@@ -174,7 +172,6 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
-
         public bool UpdateAuthor(Author author)
         {
             using (SqlConnection connection = new SqlConnection(constring))

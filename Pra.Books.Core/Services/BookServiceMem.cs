@@ -95,12 +95,19 @@ namespace Pra.Books.Core.Services
         }
         public bool AddAuthor(Author author)
         {
-            if(author.Id == 0)
+            if (author.Id == 0)
             {
+                // maak nieuw author.Id aan die 1 hoger is
+                // dan de huidige maximale waarde 
+
+                //// de LINK manier
                 int newId = 1;
                 if (authors.Count > 0)
-                 newId = authors.Max(a => a.Id);
+                    newId = authors.Max(a => a.Id);
                 author.Id = newId + 1;
+
+                // via eigen code (methode GetNewAuthorId())
+                // author.Id = GetNewAuthorId();
             }
             try
             {
@@ -112,15 +119,18 @@ namespace Pra.Books.Core.Services
                 return false;
             }
         }
-
         public bool AddBook(Book book)
         {
             if (book.Id == 0)
             {
+                // de LINK manier
                 int newId = 1;
                 if (books.Count > 0)
                     newId = books.Max(a => a.Id);
                 book.Id = newId + 1;
+
+                // via eigen code (methode GetNewBookId())
+                //book.Id = GetNewBookId();
             }
             try
             {
@@ -132,15 +142,18 @@ namespace Pra.Books.Core.Services
                 return false;
             }
         }
-
         public bool AddPublisher(Publisher publisher)
         {
             if (publisher.Id == 0)
             {
+                // de LINK manier
                 int newId = 1;
                 if (publishers.Count > 0)
                     newId = publishers.Max(a => a.Id);
                 publisher.Id = newId;
+
+                // via eigen code (methode GetNewPublisherId())
+                //publisher.Id = GetNewPublisherId();
             }
             try
             {
@@ -167,49 +180,92 @@ namespace Pra.Books.Core.Services
             publishers.Remove(publisher);
             return true;
         }
-
         public bool DeleteBook(Book book)
         {
             books.Remove(book);
             return true;
         }
 
- 
+
         public IEnumerable<Author> GetAuthors()
         {
-            return authors.OrderBy(a => a.Name).ToList().AsReadOnly();
+            return authors.OrderBy(a => a.Name);
         }
 
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
-            List<Book> filteredBooks = new List<Book>(books).OrderBy(b =>b.Title).ToList();
+
+            // de LINK manier
+            // we maken nieuwe List filteredBooks aan en
+            // kopieren alle objecten uit de List books
+            List<Book> filteredBooks = new List<Book>(books).OrderBy(b => b.Title).ToList();
             if (author != null)
                 filteredBooks = filteredBooks.Where(b => b.AuthorId == author.Id).ToList();
             if (publisher != null)
                 filteredBooks = filteredBooks.Where(b => b.PublisherId == publisher.Id).ToList();
-            return filteredBooks.AsReadOnly();
+            return filteredBooks.OrderBy(b => b.Title);
 
+            // alternatieve manier
+            // Indien geen enkele filter, dan wordt de List books geretourneerd
+            // Anders maken we een nieuwe (lege) List filteredBooks aan en
+            // overlopen alle objecten van de List books
+            // en voegen indien van toepassing elk object toe 
+            // aan de filteredBooks List
+
+            //if (author == null && publisher == null)
+            //    return books.OrderBy(b => b.Title);
+            //else
+            //{
+            //    List<Book> filteredBooks = new List<Book>();
+            //    foreach (Book book in filteredBooks)
+            //    {
+            //        if (author != null && publisher == null && author.Id == book.AuthorId)
+            //            filteredBooks.Add(book);
+            //        else if (publisher != null && author == null && publisher.Id == book.PublisherId)
+            //            filteredBooks.Add(book);
+            //        else if (author.Id == book.AuthorId && publisher.Id == book.PublisherId)
+            //            filteredBooks.Add(book);
+            //    }
+            //    return filteredBooks.OrderBy(b => b.Title);
+            //}
         }
 
         public IEnumerable<Publisher> GetPublishers()
         {
-            return publishers.OrderBy(a => a.Name).ToList().AsReadOnly();
+            return publishers.OrderBy(a => a.Name);
         }
 
         public bool IsAuthorInUse(Author author)
         {
+            // de LINQ manier
             if (books.Count(b => b.AuthorId == author.Id) == 0)
                 return false;
             else
                 return true;
-        }
 
+            //// alternatieve manier
+            //foreach (Book book in books)
+            //{
+            //    if (book.AuthorId == author.Id)
+            //        return true;
+            //}
+            //return false;
+        }
         public bool IsPublisherInUse(Publisher publisher)
         {
+            // de LINQ manier
             if (books.Count(b => b.PublisherId == publisher.Id) == 0)
                 return false;
             else
                 return true;
+
+            //// alternatieve manier
+            //foreach (Book book in books)
+            //{
+            //    if (book.PublisherId == publisher.Id)
+            //        return true;
+            //}
+            //return false;
         }
 
         public bool UpdateAuthor(Author author)
@@ -225,6 +281,35 @@ namespace Pra.Books.Core.Services
             return true;
         }
 
-
+        private int GetNewAuthorId()
+        {
+            int newAuthorId = 1;
+            foreach (Author author in authors)
+            {
+                if (author.Id > newAuthorId)
+                    newAuthorId = author.Id + 1;
+            }
+            return newAuthorId;
+        }
+        private int GetNewPublisherId()
+        {
+            int newPublisherId = 1;
+            foreach (Publisher publisher in publishers)
+            {
+                if (publisher.Id > newPublisherId)
+                    newPublisherId = publisher.Id + 1;
+            }
+            return newPublisherId;
+        }
+        private int GetNewBookId()
+        {
+            int newBookId = 1;
+            foreach (Book book in books)
+            {
+                if (book.Id > newBookId)
+                    newBookId = book.Id + 1;
+            }
+            return newBookId;
+        }
     }
 }
