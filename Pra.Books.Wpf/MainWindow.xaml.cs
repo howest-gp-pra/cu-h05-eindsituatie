@@ -23,12 +23,14 @@ namespace Pra.Books.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        IBookService bibService = new BookServiceMem();
-        bool isNew;
+        private IBookService bibService = new BookServiceMem();
+        private bool isNew;
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PopulateBooks();
@@ -36,6 +38,7 @@ namespace Pra.Books.Wpf
             PopulatePublishers();
             ActivateLeft();
         }
+
         private void PopulateBooks()
         {
             ClearControls();
@@ -45,6 +48,7 @@ namespace Pra.Books.Wpf
             lstBooks.ItemsSource = bibService.GetBooks(author, publisher);
             lstBooks.SelectedValuePath = "Id";
         }
+
         private void PopulateAuthors()
         {
             cmbFilterAuthor.ItemsSource = null;
@@ -58,6 +62,7 @@ namespace Pra.Books.Wpf
             cmbFilterAuthor.ItemsSource = bibService.GetAuthors();
             cmbAuthor.ItemsSource = bibService.GetAuthors();
         }
+
         private void PopulatePublishers()
         {
             cmbFilterPublisher.ItemsSource = null;
@@ -71,6 +76,7 @@ namespace Pra.Books.Wpf
             cmbFilterPublisher.ItemsSource = bibService.GetPublishers();
             cmbPublisher.ItemsSource = bibService.GetPublishers();
         }
+
         private void ClearControls()
         {
             txtTitle.Text = "";
@@ -78,6 +84,7 @@ namespace Pra.Books.Wpf
             cmbAuthor.SelectedIndex = -1;
             cmbPublisher.SelectedIndex = -1;
         }
+
         private void ActivateLeft()
         {
             grpLeft.IsEnabled = true;
@@ -85,6 +92,7 @@ namespace Pra.Books.Wpf
             btnSave.Visibility = Visibility.Hidden;
             btnCancel.Visibility = Visibility.Hidden;
         }
+
         private void ActivateRight()
         {
             grpLeft.IsEnabled = false;
@@ -92,24 +100,28 @@ namespace Pra.Books.Wpf
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
         }
+
         private void CmbFilterAuthor_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PopulateBooks();
         }
+
         private void CmbFilterPublisher_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PopulateBooks();
         }
+
         private void BtnClearFilterAuthor_Click(object sender, RoutedEventArgs e)
         {
+            // door selectie aan te passen wordt selection changed handler van combobox afgevuurd en zo ook de boekenlijst vernieuwd
             cmbFilterAuthor.SelectedIndex = -1;
-            PopulateBooks();
         }
+
         private void BtnClearFilterPublisher_Click(object sender, RoutedEventArgs e)
         {
             cmbFilterPublisher.SelectedIndex = -1;
-            PopulateBooks();
         }
+
         private void LstBooks_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lstBooks.SelectedItem != null)
@@ -121,6 +133,7 @@ namespace Pra.Books.Wpf
                 cmbPublisher.SelectedValue = book.PublisherId;
             }
         }
+
         private void BtnNew_Click(object sender, RoutedEventArgs e)
         {
             isNew = true;
@@ -128,6 +141,7 @@ namespace Pra.Books.Wpf
             ClearControls();
             txtTitle.Focus();
         }
+
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
             if (lstBooks.SelectedItem != null)
@@ -137,58 +151,47 @@ namespace Pra.Books.Wpf
                 txtTitle.Focus();
             }
         }
+
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             ActivateLeft();
             LstBooks_SelectionChanged(null, null);
         }
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            if (lstBooks.SelectedItem != null)
-            {
-                if (MessageBox.Show("Ben je zeker?", "Boek wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    Book book = (Book)lstBooks.SelectedItem;
-                    if (!bibService.DeleteBook(book))
-                    {
-                        MessageBox.Show("We konden het boek niet verwijderen !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    ClearControls();
-                    PopulateBooks();
-                }
-            }
-        }
+
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             string title = txtTitle.Text.Trim();
             if (title.Length == 0)
             {
-                MessageBox.Show("Je dient een titel op te geven !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient een titel op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 txtTitle.Focus();
                 return;
             }
+
             if (cmbAuthor.SelectedItem == null)
             {
-                MessageBox.Show("Je dient een auteur te selecteren !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient een auteur te selecteren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 cmbAuthor.Focus();
                 return;
             }
             Author author = (Author)cmbAuthor.SelectedItem;
+            
             if (cmbPublisher.SelectedItem == null)
             {
-                MessageBox.Show("Je dient een uitgever te selecteren !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient een uitgever te selecteren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 cmbPublisher.Focus();
                 return;
             }
             Publisher publisher = (Publisher)cmbPublisher.SelectedItem;
+            
             bool yearOk = int.TryParse(txtYear.Text, out int year);
-            if(!yearOk)
+            if (!yearOk)
             {
-                MessageBox.Show("Je dient als jaar een getal in te voeren !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient als jaar een getal in te voeren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 txtYear.Focus();
                 return;
             }
+
             Book book;
             if (isNew)
             {
@@ -212,21 +215,42 @@ namespace Pra.Books.Wpf
                     return;
                 }
             }
+
             PopulateBooks();
             lstBooks.SelectedValue = book.Id;
-            LstBooks_SelectionChanged(null, null);
             ActivateLeft();
         }
+
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (lstBooks.SelectedItem != null)
+            {
+                if (MessageBox.Show("Ben je zeker?", "Boek wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Book book = (Book)lstBooks.SelectedItem;
+                    if (!bibService.DeleteBook(book))
+                    {
+                        MessageBox.Show("We konden het boek niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    ClearControls();
+                    PopulateBooks();
+                }
+            }
+        }
+        
         private void RdbInMemory_Checked(object sender, RoutedEventArgs e)
         {
             bibService = new BookServiceMem();
             Window_Loaded(null, null);
         }
+
         private void RdbFromDatabase_Checked(object sender, RoutedEventArgs e)
         {
             bibService = new BookServiceDB();
             Window_Loaded(null, null);
         }
+
         private void BtnAuthors_Click(object sender, RoutedEventArgs e)
         {
             WinAuthors winAuthors = new WinAuthors(bibService);
@@ -234,19 +258,25 @@ namespace Pra.Books.Wpf
             // code gaat hier verder van zodra winAuthors gesloten wordt
             if(authorsUpdated == true)
             {
-                // pas alles aan rond auteurs ...
-                Guid? filterAuthorId = null;
+                // bewaar geselecteerd boek en auteur
                 Guid? bookId = null;
                 if (lstBooks.SelectedItem != null)
                     bookId = ((Book)lstBooks.SelectedItem).Id;
+                Guid? filterAuthorId = null;
                 if (cmbFilterAuthor.SelectedItem != null)
                     filterAuthorId = ((Author)cmbFilterAuthor.SelectedItem).Id;
+
+                // vernieuw auteurs
                 PopulateAuthors();
+                // herstel selectie in filter
                 cmbFilterAuthor.SelectedValue = filterAuthorId;
+
+                // herselecteer huidig boek (zodat auteur vernieuwd wordt)
+                lstBooks.UnselectAll();
                 lstBooks.SelectedValue = bookId;
-                LstBooks_SelectionChanged(null, null);
             }
         }
+
         private void BtnPublishers_Click(object sender, RoutedEventArgs e)
         {
             WinPublishers winPublishers = new WinPublishers(bibService);
@@ -254,17 +284,22 @@ namespace Pra.Books.Wpf
             // code gaat hier verder van zodra winPublishers gesloten wordt
             if (publishersUpdated == true)
             {
-                // pas alles aan rond uitgevers ...
+                // bewaar geselecteerd boek en uitgeverij
                 Guid? bookId = null;
                 if (lstBooks.SelectedItem != null)
                     bookId = ((Book)lstBooks.SelectedItem).Id;
                 Guid? filterPublisherId = null;
                 if (cmbFilterPublisher.SelectedItem != null)
                     filterPublisherId = ((Publisher)cmbFilterPublisher.SelectedItem).Id;
+
+                // vernieuw uitgevers
                 PopulatePublishers();
+                // herstel selectie in filter
                 cmbFilterPublisher.SelectedValue = filterPublisherId;
+
+                // herselecteer huidig boek (zodat uitgeverij vernieuwd wordt)
+                lstBooks.UnselectAll();
                 lstBooks.SelectedValue = bookId;
-                LstBooks_SelectionChanged(null, null);
             }
         }
     }
