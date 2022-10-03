@@ -15,11 +15,7 @@ namespace Pra.Books.Core.Services
 
         private void Seeding()
         {
-            authors = new List<Author>();
-            publishers = new List<Publisher>();
-            books = new List<Book>();
-
-            authors.AddRange(new List<Author>
+            authors= new List<Author>
             {
                 new Author (Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Elsschot Willem"),
                 new Author (Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Boon Louis-Paul"),
@@ -42,9 +38,9 @@ namespace Pra.Books.Core.Services
                 new Author (Guid.Parse("00000000-0000-0000-0000-000000000019"),  "De Vos Danny"),
                 new Author (Guid.Parse("00000000-0000-0000-0000-000000000020"),  "Brusselmans Herman"),
                 new Author (Guid.Parse("00000000-0000-0000-0000-000000000021"),  "Van Aar Hetty")
-            });
+            };
 
-            publishers.AddRange(new List<Publisher>
+            publishers = new List<Publisher>
             {
                 new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Hadewijch"),
                 new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Querido"),
@@ -58,9 +54,9 @@ namespace Pra.Books.Core.Services
                 new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Plantyn"),
                 new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000013"),  "Luttingh"),
                 new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000088"),  "Prometheus")
-            });
+            };
 
-            books.AddRange(new List<Book>
+            books = new List<Book>
             {
                 new Book(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Kaas"  ,                        Guid.Parse("00000000-0000-0000-0000-000000000001") ,  Guid.Parse("00000000-0000-0000-0000-000000000004")  , 1953),
                 new Book(Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Jan De Lichte",                 Guid.Parse("00000000-0000-0000-0000-000000000002") ,  Guid.Parse("00000000-0000-0000-0000-000000000005"),   1962),
@@ -87,51 +83,30 @@ namespace Pra.Books.Core.Services
                 new Book(Guid.Parse("00000000-0000-0000-0000-000000000023"),  "Revolusi",    Guid.Parse("00000000-0000-0000-0000-000000000008")  , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2020),
                 new Book(Guid.Parse("00000000-0000-0000-0000-000000000024"),  "Congo",   Guid.Parse("00000000-0000-0000-0000-000000000008") ,  Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2010),
                 new Book(Guid.Parse("00000000-0000-0000-0000-000000000025"),  "Maanlicht van een andere planeet",    Guid.Parse("00000000-0000-0000-0000-000000000020"),  Guid.Parse("00000000-0000-0000-0000-000000000007") ,  2010)
-            });
+            };
         }
 
         public bool AddAuthor(Author author)
         {
-            try
-            {
-                authors.Add(author);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            authors.Add(author);
+            return true;
         }
 
         public bool AddBook(Book book)
         {
-            try
-            {
-                books.Add(book);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            books.Add(book);
+            return true;
         }
 
         public bool AddPublisher(Publisher publisher)
         {
-            try
-            {
-                publishers.Add(publisher);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            publishers.Add(publisher);
+            return true;
         }
 
         public bool DeleteAuthor(Author author)
         {
-            if (IsAuthorInUse(author))
+            if(!authors.Contains(author) || IsAuthorInUse(author))
                 return false;
             authors.Remove(author);
             return true;
@@ -139,7 +114,7 @@ namespace Pra.Books.Core.Services
 
         public bool DeletePublisher(Publisher publisher)
         {
-            if (IsPublisherInUse(publisher))
+            if (!publishers.Contains(publisher) || IsPublisherInUse(publisher))
                 return false;
             publishers.Remove(publisher);
             return true;
@@ -147,17 +122,21 @@ namespace Pra.Books.Core.Services
 
         public bool DeleteBook(Book book)
         {
+            if (!books.Contains(book))
+                return false;
             books.Remove(book);
             return true;
         }
 
         public IEnumerable<Author> GetAuthors()
         {
-            return authors.OrderBy(a => a.Name);
+            return authors.AsReadOnly();
         }
 
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
+            // TODO: opsplitsen in twee opeenvolgende filters, GEEN linq
+
 
             // de LINK manier
             // we maken nieuwe List filteredBooks aan en
@@ -196,41 +175,27 @@ namespace Pra.Books.Core.Services
 
         public IEnumerable<Publisher> GetPublishers()
         {
-            return publishers.OrderBy(a => a.Name);
+            return publishers.AsReadOnly();
         }
 
         public bool IsAuthorInUse(Author author)
         {
-            // de LINQ manier
-            if (books.Count(b => b.AuthorId == author.Id) == 0)
-                return false;
-            else
-                return true;
-
-            //// alternatieve manier
-            //foreach (Book book in books)
-            //{
-            //    if (book.AuthorId == author.Id)
-            //        return true;
-            //}
-            //return false;
+            foreach (Book book in books)
+            {
+                if (book.AuthorId == author.Id)
+                    return true;
+            }
+            return false;
         }
 
         public bool IsPublisherInUse(Publisher publisher)
         {
-            // de LINQ manier
-            if (books.Count(b => b.PublisherId == publisher.Id) == 0)
-                return false;
-            else
-                return true;
-
-            //// alternatieve manier
-            //foreach (Book book in books)
-            //{
-            //    if (book.PublisherId == publisher.Id)
-            //        return true;
-            //}
-            //return false;
+            foreach (Book book in books)
+            {
+                if (book.PublisherId == publisher.Id)
+                    return true;
+            }
+            return false;
         }
 
         public bool UpdateAuthor(Author author)
