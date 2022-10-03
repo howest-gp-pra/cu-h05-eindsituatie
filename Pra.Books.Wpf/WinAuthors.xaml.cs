@@ -118,7 +118,7 @@ namespace Pra.Books.Wpf
             string name = txtName.Text.Trim();
             if (name.Length == 0)
             {
-                MessageBox.Show("Je dient een naam op te geven !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient een naam op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 txtName.Focus();
                 return;
             }

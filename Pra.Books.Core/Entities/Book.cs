@@ -7,7 +7,7 @@ namespace Pra.Books.Core.Entities
     {
         private string title;
 
-        [Key]
+        [ExplicitKey]
         public Guid Id { get; internal set; }
 
         public string Title
