@@ -16,7 +16,7 @@ namespace Pra.Books.Core.Interfaces
         bool DeletePublisher(Publisher publisher);
         bool IsPublisherInUse(Publisher publisher);
 
-        IEnumerable<Book> GetBooks(Author author, Publisher publisher);
+        IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null);
         bool AddBook(Book book);
         bool UpdateBook(Book book);
         bool DeleteBook(Book book);

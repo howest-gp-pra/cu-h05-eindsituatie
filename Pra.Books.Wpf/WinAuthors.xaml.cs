@@ -23,30 +23,35 @@ namespace Pra.Books.Wpf
     /// </summary>
     public partial class WinAuthors : Window
     {
-        public IBookService bibService;
-        public bool isUpdated = false;
+        private readonly IBookService bibService;
         private bool isNew;
-        public WinAuthors()
+
+        public WinAuthors(IBookService bibService)
         {
+            this.bibService = bibService;
             InitializeComponent();
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PopulateAuthors();
             ActivateLeft();
         }
+
         private void PopulateAuthors()
         {
             lstAuthors.SelectedValuePath = "Id";
             lstAuthors.DisplayMemberPath = "Name";
             lstAuthors.ItemsSource = bibService.GetAuthors();
         }
+
         private void ClearControls()
         {
             txtName.Text = "";
             lstBooks.ItemsSource = null;
             lstBooks.Items.Refresh();
         }
+
         private void ActivateLeft()
         {
             grpLeft.IsEnabled = true;
@@ -54,6 +59,7 @@ namespace Pra.Books.Wpf
             btnSave.Visibility = Visibility.Hidden;
             btnCancel.Visibility = Visibility.Hidden;
         }
+
         private void ActivateRight()
         {
             grpLeft.IsEnabled = false;
@@ -61,6 +67,7 @@ namespace Pra.Books.Wpf
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
         }
+
         private void LstAuthors_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ClearControls();
@@ -68,9 +75,10 @@ namespace Pra.Books.Wpf
             {
                 Author author = (Author)lstAuthors.SelectedItem;
                 txtName.Text = author.Name;
-                lstBooks.ItemsSource = bibService.GetBooks(author, null);
+                lstBooks.ItemsSource = bibService.GetBooks(author);
             }
         }
+
         private void BtnNew_Click(object sender, RoutedEventArgs e)
         {
             isNew = true;
@@ -89,28 +97,10 @@ namespace Pra.Books.Wpf
             }
         }
 
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (lstAuthors.SelectedItem != null)
-            {
-                Author author = (Author)lstAuthors.SelectedItem;
-                if(bibService.IsAuthorInUse(author))
-                {
-                    MessageBox.Show("Deze auteur is nog in gebruik en kan niet verwijderd worden!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                if (MessageBox.Show("Ben je zeker?", "Auteur wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    if (!bibService.DeleteAuthor(author))
-                    {
-                        MessageBox.Show("We konden deze auteur niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    isUpdated = true;
-                    ClearControls();
-                    PopulateAuthors();
-                }
-            }
+            ActivateLeft();
+            LstAuthors_SelectionChanged(null, null);
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -122,6 +112,7 @@ namespace Pra.Books.Wpf
                 txtName.Focus();
                 return;
             }
+
             Author author;
             if (isNew)
             {
@@ -142,21 +133,36 @@ namespace Pra.Books.Wpf
                     return;
                 }
             }
-            isUpdated = true;
+
+            DialogResult = true;
             PopulateAuthors();
             lstAuthors.SelectedValue = author.Id;
             LstAuthors_SelectionChanged(null, null);
             ActivateLeft();
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ActivateLeft();
-            LstAuthors_SelectionChanged(null, null);
+            if (lstAuthors.SelectedItem != null)
+            {
+                Author author = (Author)lstAuthors.SelectedItem;
+                if (bibService.IsAuthorInUse(author))
+                {
+                    MessageBox.Show("Deze auteur is nog in gebruik en kan niet verwijderd worden!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (MessageBox.Show("Ben je zeker?", "Auteur wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    if (!bibService.DeleteAuthor(author))
+                    {
+                        MessageBox.Show("We konden deze auteur niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    DialogResult = true;
+                    ClearControls();
+                    PopulateAuthors();
+                }
+            }
         }
-
-
-
-
     }
 }

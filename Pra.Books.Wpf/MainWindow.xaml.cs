@@ -229,11 +229,10 @@ namespace Pra.Books.Wpf
         }
         private void BtnAuthors_Click(object sender, RoutedEventArgs e)
         {
-            WinAuthors winAuthors = new WinAuthors();
-            winAuthors.bibService = bibService;
-            winAuthors.ShowDialog();
+            WinAuthors winAuthors = new WinAuthors(bibService);
+            bool? authorsUpdated = winAuthors.ShowDialog();
             // code gaat hier verder van zodra winAuthors gesloten wordt
-            if(winAuthors.isUpdated)
+            if(authorsUpdated == true)
             {
                 // pas alles aan rond auteurs ...
                 Guid? filterAuthorId = null;
@@ -247,15 +246,13 @@ namespace Pra.Books.Wpf
                 lstBooks.SelectedValue = bookId;
                 LstBooks_SelectionChanged(null, null);
             }
-
         }
         private void BtnPublishers_Click(object sender, RoutedEventArgs e)
         {
-            WinPublishers winPublishers = new WinPublishers();
-            winPublishers.bibService = bibService;
-            winPublishers.ShowDialog();
+            WinPublishers winPublishers = new WinPublishers(bibService);
+            bool? publishersUpdated = winPublishers.ShowDialog();
             // code gaat hier verder van zodra winPublishers gesloten wordt
-            if (winPublishers.isUpdated)
+            if (publishersUpdated == true)
             {
                 // pas alles aan rond uitgevers ...
                 Guid? bookId = null;

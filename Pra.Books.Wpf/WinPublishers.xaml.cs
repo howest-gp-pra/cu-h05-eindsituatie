@@ -22,30 +22,35 @@ namespace Pra.Books.Wpf
     /// </summary>
     public partial class WinPublishers : Window
     {
-        public IBookService bibService;
-        public bool isUpdated = false;
+        private readonly IBookService bibService;
         private bool isNew;
-        public WinPublishers()
+
+        public WinPublishers(IBookService bibService)
         {
+            this.bibService = bibService;
             InitializeComponent();
         }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PopulatePublishers();
             ActivateLeft();
         }
+
         private void PopulatePublishers()
         {
             lstPublishers.SelectedValuePath = "Id";
             lstPublishers.DisplayMemberPath = "Name";
             lstPublishers.ItemsSource = bibService.GetPublishers();
         }
+
         private void ClearControls()
         {
             txtName.Text = "";
             lstBooks.ItemsSource = null;
             lstBooks.Items.Refresh();
         }
+
         private void ActivateLeft()
         {
             grpLeft.IsEnabled = true;
@@ -53,6 +58,7 @@ namespace Pra.Books.Wpf
             btnSave.Visibility = Visibility.Hidden;
             btnCancel.Visibility = Visibility.Hidden;
         }
+
         private void ActivateRight()
         {
             grpLeft.IsEnabled = false;
@@ -90,28 +96,10 @@ namespace Pra.Books.Wpf
             }
         }
 
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (lstPublishers.SelectedItem != null)
-            {
-                Publisher publisher = (Publisher)lstPublishers.SelectedItem;
-                if (bibService.IsPublisherInUse(publisher))
-                {
-                    MessageBox.Show("Deze uitgever is nog in gebruik en kan niet verwijderd worden!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                if (MessageBox.Show("Ben je zeker?", "Uitgever wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    if (!bibService.DeletePublisher(publisher))
-                    {
-                        MessageBox.Show("We konden deze uitgever niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    isUpdated = true;
-                    ClearControls();
-                    PopulatePublishers();
-                }
-            }
+            ActivateLeft();
+            LstPublishers_SelectionChanged(null, null);
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -119,10 +107,11 @@ namespace Pra.Books.Wpf
             string name = txtName.Text.Trim();
             if (name.Length == 0)
             {
-                MessageBox.Show("Je dient een naam op te geven !", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Je dient een naam op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                 txtName.Focus();
                 return;
             }
+
             Publisher publisher;
             if (isNew)
             {
@@ -143,18 +132,36 @@ namespace Pra.Books.Wpf
                     return;
                 }
             }
-            isUpdated = true;
+
+            DialogResult = true;
             PopulatePublishers();
             lstPublishers.SelectedValue = publisher.Id;
             LstPublishers_SelectionChanged(null, null);
             ActivateLeft();
         }
 
-        private void BtnCancel_Click(object sender, RoutedEventArgs e)
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            ActivateLeft();
-            LstPublishers_SelectionChanged(null, null);
+            if (lstPublishers.SelectedItem != null)
+            {
+                Publisher publisher = (Publisher)lstPublishers.SelectedItem;
+                if (bibService.IsPublisherInUse(publisher))
+                {
+                    MessageBox.Show("Deze uitgever is nog in gebruik en kan niet verwijderd worden!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                if (MessageBox.Show("Ben je zeker?", "Uitgever wissen", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    if (!bibService.DeletePublisher(publisher))
+                    {
+                        MessageBox.Show("We konden deze uitgever niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    DialogResult = true;
+                    ClearControls();
+                    PopulatePublishers();
+                }
+            }
         }
-
     }
 }
