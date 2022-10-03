@@ -9,45 +9,45 @@ namespace Pra.Books.Core.Services
 {
     public class BookServiceDB : IBookService
     {
-        private readonly string constring 
+        private readonly string conString 
             = @"Data Source=(local)\SQLEXPRESS;Initial Catalog = PraBooks; Integrated security = true;";
-        private string HandleQuotes(string value)
-        {
-            return value.Trim().Replace("'", "''");
-        }
+
         public IEnumerable<Author> GetAuthors()
         {
             string sql = "select id, name from authors order by name";
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     return connection.Query<Author>(sql);
                 }
                 catch
                 {
-                    return null;
+                    return Enumerable.Empty<Author>();
                 }
             }
         }
+
         public IEnumerable<Publisher> GetPublishers()
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            string sql = "select id, name from publishers order by name";
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
-                    return connection.GetAll<Publisher>().OrderBy(p => p.Name);
+                    return connection.Query<Publisher>(sql);
                 }
                 catch
                 {
-                    return null;
+                    return Enumerable.Empty<Publisher>();
                 }
             }
         }
+
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
+            // TODO: merge filter with composition query
+
             string sql = "Select * from books";
             List<string> filters = new List<string>();
             if (author != null)
@@ -58,7 +58,7 @@ namespace Pra.Books.Core.Services
                 sql += $" where {string.Join(" and ", filters)}";
             sql += " order by title";
 
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
@@ -75,16 +75,14 @@ namespace Pra.Books.Core.Services
             }
 
         }
+
         public bool IsAuthorInUse(Author author)
         {
             string sql = $"select count(*) from books where authorId = {author.Id}";
-            //string sql = "select count(*) from books where authorID = @id";
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
-                    //int count = connection.ExecuteScalar<int>(sql, author);
                     int count = connection.ExecuteScalar<int>(sql);
                     return count > 0;
                 }
@@ -99,32 +97,32 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool IsPublisherInUse(Publisher publisher)
         {
             string sql = "select count(*) from books where publisherId = @id";
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     int count = connection.ExecuteScalar<int>(sql, publisher);
                     return count > 0;
                 }
                 catch
                 {
+                    // zelfde reden als bij IsAuthorInUse
                     return true;
                 }
             }
         }
+
         public bool AddAuthor(Author author)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Insert(author);
-                    //var newAutoNumberValue = connection.Insert(publisher);
                     return true;
                 }
                 catch
@@ -133,13 +131,13 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool AddPublisher(Publisher publisher)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Insert(publisher);
                     return true;
                 }
@@ -149,15 +147,14 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool AddBook(Book book)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Insert(book);
-                    var newAutoNumberValue = connection.Insert(book);
                     return true;
                 }
                 catch
@@ -166,13 +163,13 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool UpdateAuthor(Author author)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Update(author);
                     return true;
                 }
@@ -182,13 +179,13 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool UpdatePublisher(Publisher publisher)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Update(publisher);
                     return true;
                 }
@@ -198,13 +195,13 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool UpdateBook(Book book)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Update(book);
                     return true;
                 }
@@ -214,15 +211,15 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool DeleteAuthor(Author author)
         {
             if (IsAuthorInUse(author))
                 return false;
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Delete(author);
                     return true;
                 }
@@ -232,15 +229,15 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool DeletePublisher(Publisher publisher)
         {
             if (IsPublisherInUse(publisher))
                 return false;
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Delete(publisher);
                     return true;
                 }
@@ -250,13 +247,13 @@ namespace Pra.Books.Core.Services
                 }
             }
         }
+
         public bool DeleteBook(Book book)
         {
-            using (SqlConnection connection = new SqlConnection(constring))
+            using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
                 {
-                    connection.Open();
                     connection.Delete(book);
                     return true;
                 }
@@ -266,7 +263,5 @@ namespace Pra.Books.Core.Services
                 }
             }
         }       
-
     }
-
 }
