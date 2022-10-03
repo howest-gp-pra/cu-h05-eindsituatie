@@ -135,42 +135,40 @@ namespace Pra.Books.Core.Services
 
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
-            // TODO: opsplitsen in twee opeenvolgende filters, GEEN linq
+            IEnumerable<Book> filteredBooks = books.AsReadOnly();
 
+            if(author != null)
+                filteredBooks = FilterOnAuthor(filteredBooks, author);
+            if(publisher != null)
+                filteredBooks = FilterOnPublisher(filteredBooks, publisher);
 
-            // de LINK manier
-            // we maken nieuwe List filteredBooks aan en
-            // kopieren alle objecten uit de List books
-            List<Book> filteredBooks = new List<Book>(books).OrderBy(b => b.Title).ToList();
-            if (author != null)
-                filteredBooks = filteredBooks.Where(b => b.AuthorId == author.Id).ToList();
-            if (publisher != null)
-                filteredBooks = filteredBooks.Where(b => b.PublisherId == publisher.Id).ToList();
-            return filteredBooks.OrderBy(b => b.Title);
+            return filteredBooks;
+        }
 
-            // alternatieve manier
-            // Indien geen enkele filter, dan wordt de List books geretourneerd
-            // Anders maken we een nieuwe (lege) List filteredBooks aan en
-            // overlopen alle objecten van de List books
-            // en voegen indien van toepassing elk object toe 
-            // aan de filteredBooks List
+        private IEnumerable<Book> FilterOnAuthor(IEnumerable<Book> books, Author author)
+        {
+            List<Book> filtered = new List<Book>();
+            foreach(Book book in books)
+            {
+                if(book.AuthorId == author.Id)
+                {
+                    filtered.Add(book);
+                }
+            }
+            return filtered;
+        }
 
-            //if (author == null && publisher == null)
-            //    return books.OrderBy(b => b.Title);
-            //else
-            //{
-            //    List<Book> filteredBooks = new List<Book>();
-            //    foreach (Book book in filteredBooks)
-            //    {
-            //        if (author != null && publisher == null && author.Id == book.AuthorId)
-            //            filteredBooks.Add(book);
-            //        else if (publisher != null && author == null && publisher.Id == book.PublisherId)
-            //            filteredBooks.Add(book);
-            //        else if (author.Id == book.AuthorId && publisher.Id == book.PublisherId)
-            //            filteredBooks.Add(book);
-            //    }
-            //    return filteredBooks.OrderBy(b => b.Title);
-            //}
+        private IEnumerable<Book> FilterOnPublisher(IEnumerable<Book> books, Publisher publisher)
+        {
+            List<Book> filtered = new List<Book>();
+            foreach (Book book in books)
+            {
+                if (book.PublisherId == publisher.Id)
+                {
+                    filtered.Add(book);
+                }
+            }
+            return filtered;
         }
 
         public IEnumerable<Publisher> GetPublishers()
