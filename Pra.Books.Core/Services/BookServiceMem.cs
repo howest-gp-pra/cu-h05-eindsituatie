@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Pra.Books.Core.Entities;
+﻿using Pra.Books.Core.Entities;
 using Pra.Books.Core.Interfaces;
 namespace Pra.Books.Core.Services
 {
@@ -13,11 +8,11 @@ namespace Pra.Books.Core.Services
         private List<Publisher> publishers;
         private List<Book> books;
 
-
         public BookServiceMem()
         {
             Seeding();
         }
+
         private void Seeding()
         {
             authors = new List<Author>();
@@ -26,89 +21,77 @@ namespace Pra.Books.Core.Services
 
             authors.AddRange(new List<Author>
             {
-                new Author (1,   "Elsschot Willem"),
-                new Author (2,   "Boon Louis-Paul"),
-                new Author (3,   "Claus Hugo"),
-                new Author (4,   "Lanoye Tom"),
-                new Author (5,   "Zinzen Walter"),
-                new Author (6,   "Tuchman Barbara"),
-                new Author (7,   "Christie Agatha"),
-                new Author (8,   "Van Reybrouck David"),
-                new Author (9,   "Pauwels Jan"),
-                new Author (10,  "Konrad György"),
-                new Author (11,  "Breemeersch Koen"),
-                new Author (12,  "Jennings Roger"),
-                new Author (13,  "Meyer Deon"),
-                new Author (14,  "Jordan Camille"),
-                new Author (15,  "Swan Tom"),
-                new Author (16,  "Cook Robin"),
-                new Author (17,  "Brown Dan"),
-                new Author (18,  "Van Wittenberghe Annelies"),
-                new Author (19,  "De Vos Danny"),
-                new Author (20,  "Brusselmans Herman"),
-                new Author (21,  "Van Aar Hetty")
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Elsschot Willem"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Boon Louis-Paul"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000003"),   "Claus Hugo"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Lanoye Tom"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000005"),   "Zinzen Walter"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000006"),   "Tuchman Barbara"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Christie Agatha"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000008"),   "Van Reybrouck David"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Pauwels Jan"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Konrad György"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000011"),  "Breemeersch Koen"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Jennings Roger"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000013"),  "Meyer Deon"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000014"),  "Jordan Camille"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000015"),  "Swan Tom"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000016"),  "Cook Robin"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000017"),  "Brown Dan"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000018"),  "Van Wittenberghe Annelies"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000019"),  "De Vos Danny"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000020"),  "Brusselmans Herman"),
+                new Author (Guid.Parse("00000000-0000-0000-0000-000000000021"),  "Van Aar Hetty")
             });
+
             publishers.AddRange(new List<Publisher>
             {
-                new Publisher(1,   "Hadewijch"),
-                new Publisher(4,   "Querido"),
-                new Publisher(5,   "Arbeiderspers"),
-                new Publisher(6,   "De Bezige Bij"),
-                new Publisher(7,   "Prometheus"),
-                new Publisher(8,   "QUE"),
-                new Publisher(9,   "Academic Service"),
-                new Publisher(10,  "Casterman"),
-                new Publisher(11,  "AW Bruna"),
-                new Publisher(12,  "Plantyn"),
-                new Publisher(13,  "Luttingh"),
-                new Publisher(88,  "Prometheus")
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Hadewijch"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Querido"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000005"),   "Arbeiderspers"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000006"),   "De Bezige Bij"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Prometheus"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000008"),   "QUE"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Academic Service"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Casterman"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000011"),  "AW Bruna"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Plantyn"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000013"),  "Luttingh"),
+                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000088"),  "Prometheus")
             });
+
             books.AddRange(new List<Book>
             {
-                new Book( 1,   "Kaas"  ,  1 ,  4  , 1953),
-                new Book(2,   "Jan De Lichte",   2 ,  5,   1962),
-                new Book(3,   "Geuzenboek",  2 ,  5 ,  1964),
-                new Book(4,   "Het verdriet van België", 3 ,  6 ,  1983),
-                new Book(5,   "De geruchten",    3  , 6 ,  1996),
-                new Book(6,   "De koele minnaar",    3 ,  6,   1970),
-                new Book(7,   "Kartonnen dozen", 4  , 7 , 1993),
-                new Book(8,   "Mobotu",  5  , 1 ,  1995),
-                new Book(9,   "Programmeren met Turbo Pascal",   15,  9,   1995),
-                new Book(10,  "Programmeren met C++",    15,  9 ,  1996),
-                new Book(11,  "Programmeren met LISP",   15 , 9 ,  1995),
-                new Book(12,  "Gestructureerde Analyse", 14,  9 ,  1989),
-                new Book(13,  "OO software ontwerp", 14,  9,   1992),
-                new Book(14,  "Compleet handboek Access 97", 12,  8 ,  1997),
-                new Book(15,  "Compleet handboek Access 2000",   12 , 8 ,  1999),
-                new Book(16,  "Compleet handboek Access 95", 12 , 8  , 1995),
-                new Book(17,  "Tuinieren voor beginners",    11 , 7 ,  1999),
-                new Book(18,  "Tuinieren voor gevorderden",  11 , 6 ,  1999),
-                new Book(19,  "Afrikaanse tuinen",   11 , 6 ,  2000),
-                new Book(20,  "Vreemd Lichaam",  16 , 11 , 2008),
-                new Book(21,  "Het Juvenalis Dilemma",   17 , 13,  1998),
-                new Book(22,  "Het verloren symbool",    17 , 13 , 2009),
-                new Book(23,  "Revolusi",    8  , 6 ,  2020),
-                new Book(24,  "Congo",   8 ,  6 ,  2010),
-                new Book(25,  "Maanlicht van een andere planeet",    20,  7 ,  2010)
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Kaas"  ,                        Guid.Parse("00000000-0000-0000-0000-000000000001") ,  Guid.Parse("00000000-0000-0000-0000-000000000004")  , 1953),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Jan De Lichte",                 Guid.Parse("00000000-0000-0000-0000-000000000002") ,  Guid.Parse("00000000-0000-0000-0000-000000000005"),   1962),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000003"),   "Geuzenboek",                    Guid.Parse("00000000-0000-0000-0000-000000000002") ,  Guid.Parse("00000000-0000-0000-0000-000000000005") ,  1964),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Het verdriet van België",       Guid.Parse("00000000-0000-0000-0000-000000000003") ,  Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1983),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000005"),   "De geruchten",                  Guid.Parse("00000000-0000-0000-0000-000000000004")  , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1996),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000006"),   "De koele minnaar",              Guid.Parse("00000000-0000-0000-0000-000000000003") ,  Guid.Parse("00000000-0000-0000-0000-000000000006"),   1970),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Kartonnen dozen",               Guid.Parse("00000000-0000-0000-0000-000000000004")  , Guid.Parse("00000000-0000-0000-0000-000000000007") , 1993),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000008"),   "Mobotu",                        Guid.Parse("00000000-0000-0000-0000-000000000005")  , Guid.Parse("00000000-0000-0000-0000-000000000001") ,  1995),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Programmeren met Turbo Pascal", Guid.Parse("00000000-0000-0000-0000-000000000015"),  Guid.Parse("00000000-0000-0000-0000-000000000009"),   1995),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Programmeren met C++",           Guid.Parse("00000000-0000-0000-0000-000000000015"),  Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1996),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000011"),  "Programmeren met LISP",          Guid.Parse("00000000-0000-0000-0000-000000000015") , Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1995),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Gestructureerde Analyse",        Guid.Parse("00000000-0000-0000-0000-000000000014"),  Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1989),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000013"),  "OO software ontwerp", Guid.Parse("00000000-0000-0000-0000-000000000014"),  Guid.Parse("00000000-0000-0000-0000-000000000009"),   1992),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000014"),  "Compleet handboek Access 97", Guid.Parse("00000000-0000-0000-0000-000000000012"),  Guid.Parse("00000000-0000-0000-0000-000000000008") ,  1997),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000015"),  "Compleet handboek Access 2000",   Guid.Parse("00000000-0000-0000-0000-000000000012") , Guid.Parse("00000000-0000-0000-0000-000000000008") ,  1999),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000016"),  "Compleet handboek Access 95", Guid.Parse("00000000-0000-0000-0000-000000000012") , Guid.Parse("00000000-0000-0000-0000-000000000008")  , 1995),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000017"),  "Tuinieren voor beginners",    Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000007") ,  1999),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000018"),  "Tuinieren voor gevorderden",  Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1999),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000019"),  "Afrikaanse tuinen",   Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2000),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000020"),  "Vreemd Lichaam",  Guid.Parse("00000000-0000-0000-0000-000000000016") , Guid.Parse("00000000-0000-0000-0000-000000000011") , 2008),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000021"),  "Het Juvenalis Dilemma",   Guid.Parse("00000000-0000-0000-0000-000000000017") , Guid.Parse("00000000-0000-0000-0000-000000000013"),  1998),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000022"),  "Het verloren symbool",    Guid.Parse("00000000-0000-0000-0000-000000000017") , Guid.Parse("00000000-0000-0000-0000-000000000013") , 2009),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000023"),  "Revolusi",    Guid.Parse("00000000-0000-0000-0000-000000000008")  , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2020),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000024"),  "Congo",   Guid.Parse("00000000-0000-0000-0000-000000000008") ,  Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2010),
+                new Book(Guid.Parse("00000000-0000-0000-0000-000000000025"),  "Maanlicht van een andere planeet",    Guid.Parse("00000000-0000-0000-0000-000000000020"),  Guid.Parse("00000000-0000-0000-0000-000000000007") ,  2010)
             });
-
         }
+
         public bool AddAuthor(Author author)
         {
-            if (author.Id == 0)
-            {
-                // maak nieuw author.Id aan die 1 hoger is
-                // dan de huidige maximale waarde 
-
-                //// de LINK manier
-                int newId = 1;
-                if (authors.Count > 0)
-                    newId = authors.Max(a => a.Id);
-                author.Id = newId + 1;
-
-                // via eigen code (methode GetNewAuthorId())
-                // author.Id = GetNewAuthorId();
-            }
             try
             {
                 authors.Add(author);
@@ -119,19 +102,9 @@ namespace Pra.Books.Core.Services
                 return false;
             }
         }
+
         public bool AddBook(Book book)
         {
-            if (book.Id == 0)
-            {
-                // de LINK manier
-                int newId = 1;
-                if (books.Count > 0)
-                    newId = books.Max(a => a.Id);
-                book.Id = newId + 1;
-
-                // via eigen code (methode GetNewBookId())
-                //book.Id = GetNewBookId();
-            }
             try
             {
                 books.Add(book);
@@ -142,19 +115,9 @@ namespace Pra.Books.Core.Services
                 return false;
             }
         }
+
         public bool AddPublisher(Publisher publisher)
         {
-            if (publisher.Id == 0)
-            {
-                // de LINK manier
-                int newId = 1;
-                if (publishers.Count > 0)
-                    newId = publishers.Max(a => a.Id);
-                publisher.Id = newId;
-
-                // via eigen code (methode GetNewPublisherId())
-                //publisher.Id = GetNewPublisherId();
-            }
             try
             {
                 publishers.Add(publisher);
@@ -173,6 +136,7 @@ namespace Pra.Books.Core.Services
             authors.Remove(author);
             return true;
         }
+
         public bool DeletePublisher(Publisher publisher)
         {
             if (IsPublisherInUse(publisher))
@@ -180,12 +144,12 @@ namespace Pra.Books.Core.Services
             publishers.Remove(publisher);
             return true;
         }
+
         public bool DeleteBook(Book book)
         {
             books.Remove(book);
             return true;
         }
-
 
         public IEnumerable<Author> GetAuthors()
         {
@@ -251,6 +215,7 @@ namespace Pra.Books.Core.Services
             //}
             //return false;
         }
+
         public bool IsPublisherInUse(Publisher publisher)
         {
             // de LINQ manier
@@ -272,44 +237,15 @@ namespace Pra.Books.Core.Services
         {
             return true;
         }
+
         public bool UpdatePublisher(Publisher publisher)
         {
             return true;
         }
+
         public bool UpdateBook(Book book)
         {
             return true;
-        }
-
-        private int GetNewAuthorId()
-        {
-            int newAuthorId = 1;
-            foreach (Author author in authors)
-            {
-                if (author.Id > newAuthorId)
-                    newAuthorId = author.Id + 1;
-            }
-            return newAuthorId;
-        }
-        private int GetNewPublisherId()
-        {
-            int newPublisherId = 1;
-            foreach (Publisher publisher in publishers)
-            {
-                if (publisher.Id > newPublisherId)
-                    newPublisherId = publisher.Id + 1;
-            }
-            return newPublisherId;
-        }
-        private int GetNewBookId()
-        {
-            int newBookId = 1;
-            foreach (Book book in books)
-            {
-                if (book.Id > newBookId)
-                    newBookId = book.Id + 1;
-            }
-            return newBookId;
         }
     }
 }

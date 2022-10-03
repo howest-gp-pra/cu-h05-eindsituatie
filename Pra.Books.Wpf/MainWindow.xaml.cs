@@ -236,8 +236,8 @@ namespace Pra.Books.Wpf
             if(winAuthors.isUpdated)
             {
                 // pas alles aan rond auteurs ...
-                int filterAuthorId = -1;
-                int bookId = -1;
+                Guid? filterAuthorId = null;
+                Guid? bookId = null;
                 if (lstBooks.SelectedItem != null)
                     bookId = ((Book)lstBooks.SelectedItem).Id;
                 if (cmbFilterAuthor.SelectedItem != null)
@@ -258,10 +258,10 @@ namespace Pra.Books.Wpf
             if (winPublishers.isUpdated)
             {
                 // pas alles aan rond uitgevers ...
-                int bookId = -1;
+                Guid? bookId = null;
                 if (lstBooks.SelectedItem != null)
                     bookId = ((Book)lstBooks.SelectedItem).Id;
-                int filterPublisherId = -1;
+                Guid? filterPublisherId = null;
                 if (cmbFilterPublisher.SelectedItem != null)
                     filterPublisherId = ((Publisher)cmbFilterPublisher.SelectedItem).Id;
                 PopulatePublishers();
