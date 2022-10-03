@@ -1,5 +1,6 @@
 ﻿using Pra.Books.Core.Entities;
 using Pra.Books.Core.Interfaces;
+
 namespace Pra.Books.Core.Services
 {
     public class BookServiceMem : IBookService

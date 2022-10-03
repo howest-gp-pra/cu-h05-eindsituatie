@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
-using Pra.Books.Core.Entities;
+﻿using Pra.Books.Core.Entities;
 using Pra.Books.Core.Interfaces;
 using System.Data.SqlClient;
-using System.Linq;
 using Dapper;
 using Dapper.Contrib.Extensions;
 
