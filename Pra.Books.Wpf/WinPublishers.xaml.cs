@@ -25,6 +25,8 @@ namespace Pra.Books.Wpf
         private readonly IBookService bibService;
         private bool isNew;
 
+        public bool IsUpdated { get; internal set; }
+
         public WinPublishers(IBookService bibService)
         {
             this.bibService = bibService;
@@ -40,7 +42,6 @@ namespace Pra.Books.Wpf
         private void PopulatePublishers()
         {
             lstPublishers.SelectedValuePath = "Id";
-            lstPublishers.DisplayMemberPath = "Name";
             lstPublishers.ItemsSource = bibService.GetPublishers();
         }
 
@@ -133,7 +134,7 @@ namespace Pra.Books.Wpf
                 }
             }
 
-            DialogResult = true;
+            IsUpdated = true;
             PopulatePublishers();
             lstPublishers.SelectedValue = publisher.Id;
             LstPublishers_SelectionChanged(null, null);
@@ -157,7 +158,7 @@ namespace Pra.Books.Wpf
                         MessageBox.Show("We konden deze uitgever niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-                    DialogResult = true;
+                    IsUpdated = true;
                     ClearControls();
                     PopulatePublishers();
                 }

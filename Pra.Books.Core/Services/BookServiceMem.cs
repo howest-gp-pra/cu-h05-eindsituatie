@@ -16,74 +16,74 @@ namespace Pra.Books.Core.Services
 
         private void Seeding()
         {
-            authors= new List<Author>
+            authors = new List<Author>
             {
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Elsschot Willem"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Boon Louis-Paul"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000003"),   "Claus Hugo"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Lanoye Tom"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000005"),   "Zinzen Walter"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000006"),   "Tuchman Barbara"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Christie Agatha"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000008"),   "Van Reybrouck David"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Pauwels Jan"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Konrad György"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000011"),  "Breemeersch Koen"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Jennings Roger"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000013"),  "Meyer Deon"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000014"),  "Jordan Camille"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000015"),  "Swan Tom"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000016"),  "Cook Robin"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000017"),  "Brown Dan"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000018"),  "Van Wittenberghe Annelies"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000019"),  "De Vos Danny"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000020"),  "Brusselmans Herman"),
-                new Author (Guid.Parse("00000000-0000-0000-0000-000000000021"),  "Van Aar Hetty")
+                new Author ("Elsschot Willem"),
+                new Author ("Boon Louis-Paul"),
+                new Author ("Claus Hugo"),
+                new Author ("Lanoye Tom"),
+                new Author ("Zinzen Walter"),
+                new Author ("Tuchman Barbara"),
+                new Author ("Christie Agatha"),
+                new Author ("Van Reybrouck David"),
+                new Author ("Pauwels Jan"),
+                new Author ("Konrad György"),
+                new Author ("Breemeersch Koen"),
+                new Author ("Jennings Roger"),
+                new Author ("Meyer Deon"),
+                new Author ("Jordan Camille"),
+                new Author ("Swan Tom"),
+                new Author ("Cook Robin"),
+                new Author ("Brown Dan"),
+                new Author ("Van Wittenberghe Annelies"),
+                new Author ("De Vos Danny"),
+                new Author ("Brusselmans Herman"),
+                new Author ("Van Aar Hetty")
             };
 
             publishers = new List<Publisher>
             {
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Hadewijch"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Querido"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000005"),   "Arbeiderspers"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000006"),   "De Bezige Bij"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Prometheus"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000008"),   "QUE"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Academic Service"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Casterman"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000011"),  "AW Bruna"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Plantyn"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000013"),  "Luttingh"),
-                new Publisher(Guid.Parse("00000000-0000-0000-0000-000000000088"),  "Prometheus")
+                new Publisher("Hadewijch"),
+                new Publisher("Querido"),
+                new Publisher("Arbeiderspers"),
+                new Publisher("De Bezige Bij"),
+                new Publisher("Prometheus"),
+                new Publisher("QUE"),
+                new Publisher("Academic Service"),
+                new Publisher("Casterman"),
+                new Publisher("AW Bruna"),
+                new Publisher("Plantyn"),
+                new Publisher("Luttingh"),
+                new Publisher("Prometheus")
             };
 
             books = new List<Book>
             {
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000001"),   "Kaas"  ,                        Guid.Parse("00000000-0000-0000-0000-000000000001") ,  Guid.Parse("00000000-0000-0000-0000-000000000004")  , 1953),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000002"),   "Jan De Lichte",                 Guid.Parse("00000000-0000-0000-0000-000000000002") ,  Guid.Parse("00000000-0000-0000-0000-000000000005"),   1962),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000003"),   "Geuzenboek",                    Guid.Parse("00000000-0000-0000-0000-000000000002") ,  Guid.Parse("00000000-0000-0000-0000-000000000005") ,  1964),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000004"),   "Het verdriet van België",       Guid.Parse("00000000-0000-0000-0000-000000000003") ,  Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1983),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000005"),   "De geruchten",                  Guid.Parse("00000000-0000-0000-0000-000000000004")  , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1996),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000006"),   "De koele minnaar",              Guid.Parse("00000000-0000-0000-0000-000000000003") ,  Guid.Parse("00000000-0000-0000-0000-000000000006"),   1970),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000007"),   "Kartonnen dozen",               Guid.Parse("00000000-0000-0000-0000-000000000004")  , Guid.Parse("00000000-0000-0000-0000-000000000007") , 1993),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000008"),   "Mobotu",                        Guid.Parse("00000000-0000-0000-0000-000000000005")  , Guid.Parse("00000000-0000-0000-0000-000000000001") ,  1995),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000009"),   "Programmeren met Turbo Pascal", Guid.Parse("00000000-0000-0000-0000-000000000015"),  Guid.Parse("00000000-0000-0000-0000-000000000009"),   1995),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000010"),  "Programmeren met C++",           Guid.Parse("00000000-0000-0000-0000-000000000015"),  Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1996),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000011"),  "Programmeren met LISP",          Guid.Parse("00000000-0000-0000-0000-000000000015") , Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1995),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000012"),  "Gestructureerde Analyse",        Guid.Parse("00000000-0000-0000-0000-000000000014"),  Guid.Parse("00000000-0000-0000-0000-000000000009") ,  1989),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000013"),  "OO software ontwerp", Guid.Parse("00000000-0000-0000-0000-000000000014"),  Guid.Parse("00000000-0000-0000-0000-000000000009"),   1992),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000014"),  "Compleet handboek Access 97", Guid.Parse("00000000-0000-0000-0000-000000000012"),  Guid.Parse("00000000-0000-0000-0000-000000000008") ,  1997),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000015"),  "Compleet handboek Access 2000",   Guid.Parse("00000000-0000-0000-0000-000000000012") , Guid.Parse("00000000-0000-0000-0000-000000000008") ,  1999),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000016"),  "Compleet handboek Access 95", Guid.Parse("00000000-0000-0000-0000-000000000012") , Guid.Parse("00000000-0000-0000-0000-000000000008")  , 1995),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000017"),  "Tuinieren voor beginners",    Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000007") ,  1999),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000018"),  "Tuinieren voor gevorderden",  Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  1999),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000019"),  "Afrikaanse tuinen",   Guid.Parse("00000000-0000-0000-0000-000000000011") , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2000),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000020"),  "Vreemd Lichaam",  Guid.Parse("00000000-0000-0000-0000-000000000016") , Guid.Parse("00000000-0000-0000-0000-000000000011") , 2008),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000021"),  "Het Juvenalis Dilemma",   Guid.Parse("00000000-0000-0000-0000-000000000017") , Guid.Parse("00000000-0000-0000-0000-000000000013"),  1998),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000022"),  "Het verloren symbool",    Guid.Parse("00000000-0000-0000-0000-000000000017") , Guid.Parse("00000000-0000-0000-0000-000000000013") , 2009),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000023"),  "Revolusi",    Guid.Parse("00000000-0000-0000-0000-000000000008")  , Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2020),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000024"),  "Congo",   Guid.Parse("00000000-0000-0000-0000-000000000008") ,  Guid.Parse("00000000-0000-0000-0000-000000000006") ,  2010),
-                new Book(Guid.Parse("00000000-0000-0000-0000-000000000025"),  "Maanlicht van een andere planeet",    Guid.Parse("00000000-0000-0000-0000-000000000020"),  Guid.Parse("00000000-0000-0000-0000-000000000007") ,  2010)
+                new Book("Kaas"  ,                              authors[0],     publishers[1],  1953),
+                new Book("Jan De Lichte",                       authors[1],     publishers[2],  1962),
+                new Book("Geuzenboek",                          authors[1],     publishers[2],  1964),
+                new Book("Het verdriet van België",             authors[2],     publishers[3],  1983),
+                new Book("De geruchten",                        authors[3],     publishers[3],  1996),
+                new Book("De koele minnaar",                    authors[2],     publishers[3],  1970),
+                new Book("Kartonnen dozen",                     authors[3],     publishers[4],  1993),
+                new Book("Mobotu",                              authors[4],     publishers[0],  1995),
+                new Book("Programmeren met Turbo Pascal",       authors[14],    publishers[6],  1995),
+                new Book("Programmeren met C++",                authors[14],    publishers[6],  1996),
+                new Book("Programmeren met LISP",               authors[14],    publishers[6],  1995),
+                new Book("Gestructureerde Analyse",             authors[13],    publishers[6],  1989),
+                new Book("OO software ontwerp",                 authors[13],    publishers[6],  1992),
+                new Book("Compleet handboek Access 97",         authors[11],    publishers[5],  1997),
+                new Book("Compleet handboek Access 2000",       authors[11],    publishers[5],  1999),
+                new Book("Compleet handboek Access 95",         authors[11],    publishers[5],  1995),
+                new Book("Tuinieren voor beginners",            authors[10],    publishers[4],  1999),
+                new Book("Tuinieren voor gevorderden",          authors[10],    publishers[3],  1999),
+                new Book("Afrikaanse tuinen",                   authors[10],    publishers[3],  2000),
+                new Book("Vreemd Lichaam",                      authors[15],    publishers[8],  2008),
+                new Book("Het Juvenalis Dilemma",               authors[16],    publishers[10], 1998),
+                new Book("Het verloren symbool",                authors[16],    publishers[10], 2009),
+                new Book("Revolusi",                            authors[7],     publishers[3],  2020),
+                new Book("Congo",                               authors[7],     publishers[3],  2010),
+                new Book("Maanlicht van een andere planeet",    authors[19],    publishers[4],  2010)
             };
         }
 
@@ -151,7 +151,7 @@ namespace Pra.Books.Core.Services
             List<Book> filtered = new List<Book>();
             foreach(Book book in books)
             {
-                if(book.AuthorId == author.Id)
+                if(book.Author == author)
                 {
                     filtered.Add(book);
                 }
@@ -164,7 +164,7 @@ namespace Pra.Books.Core.Services
             List<Book> filtered = new List<Book>();
             foreach (Book book in books)
             {
-                if (book.PublisherId == publisher.Id)
+                if (book.Publisher == publisher)
                 {
                     filtered.Add(book);
                 }
@@ -181,7 +181,7 @@ namespace Pra.Books.Core.Services
         {
             foreach (Book book in books)
             {
-                if (book.AuthorId == author.Id)
+                if (book.Author == author)
                     return true;
             }
             return false;
@@ -191,7 +191,7 @@ namespace Pra.Books.Core.Services
         {
             foreach (Book book in books)
             {
-                if (book.PublisherId == publisher.Id)
+                if (book.Publisher == publisher)
                     return true;
             }
             return false;

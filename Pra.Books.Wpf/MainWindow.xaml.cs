@@ -55,9 +55,7 @@ namespace Pra.Books.Wpf
             cmbAuthor.ItemsSource = null;
 
             cmbFilterAuthor.SelectedValuePath = "Id";
-            cmbFilterAuthor.DisplayMemberPath = "Name"; 
             cmbAuthor.SelectedValuePath = "Id";
-            cmbAuthor.DisplayMemberPath = "Name";
 
             cmbFilterAuthor.ItemsSource = bibService.GetAuthors();
             cmbAuthor.ItemsSource = bibService.GetAuthors();
@@ -129,8 +127,8 @@ namespace Pra.Books.Wpf
                 Book book = (Book)lstBooks.SelectedItem;
                 txtTitle.Text = book.Title;
                 txtYear.Text = book.Year.ToString();
-                cmbAuthor.SelectedValue = book.AuthorId;
-                cmbPublisher.SelectedValue = book.PublisherId;
+                cmbAuthor.SelectedValue = book.Author.Id;
+                cmbPublisher.SelectedValue = book.Publisher.Id;
             }
         }
 
@@ -195,7 +193,7 @@ namespace Pra.Books.Wpf
             Book book;
             if (isNew)
             {
-                book = new Book(title, author.Id, publisher.Id, year);
+                book = new Book(title, author, publisher, year);
                 if (!bibService.AddBook(book))
                 {
                     MessageBox.Show("We konden het nieuwe boek niet bewaren.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -206,8 +204,8 @@ namespace Pra.Books.Wpf
             {
                 book = (Book)lstBooks.SelectedItem;
                 book.Title = title;
-                book.AuthorId = author.Id;
-                book.PublisherId = publisher.Id;
+                book.Author = author;
+                book.Publisher = publisher;
                 book.Year = year;
                 if (!bibService.UpdateBook(book))
                 {
@@ -254,9 +252,9 @@ namespace Pra.Books.Wpf
         private void BtnAuthors_Click(object sender, RoutedEventArgs e)
         {
             WinAuthors winAuthors = new WinAuthors(bibService);
-            bool? authorsUpdated = winAuthors.ShowDialog();
+            winAuthors.ShowDialog();
             // code gaat hier verder van zodra winAuthors gesloten wordt
-            if(authorsUpdated == true)
+            if(winAuthors.IsUpdated)
             {
                 // bewaar geselecteerd boek en auteur
                 Guid? bookId = null;
@@ -280,9 +278,9 @@ namespace Pra.Books.Wpf
         private void BtnPublishers_Click(object sender, RoutedEventArgs e)
         {
             WinPublishers winPublishers = new WinPublishers(bibService);
-            bool? publishersUpdated = winPublishers.ShowDialog();
+            winPublishers.ShowDialog();
             // code gaat hier verder van zodra winPublishers gesloten wordt
-            if (publishersUpdated == true)
+            if (winPublishers.IsUpdated)
             {
                 // bewaar geselecteerd boek en uitgeverij
                 Guid? bookId = null;

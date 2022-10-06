@@ -26,6 +26,8 @@ namespace Pra.Books.Wpf
         private readonly IBookService bibService;
         private bool isNew;
 
+        public bool IsUpdated { get; private set; }
+
         public WinAuthors(IBookService bibService)
         {
             this.bibService = bibService;
@@ -41,7 +43,6 @@ namespace Pra.Books.Wpf
         private void PopulateAuthors()
         {
             lstAuthors.SelectedValuePath = "Id";
-            lstAuthors.DisplayMemberPath = "Name";
             lstAuthors.ItemsSource = bibService.GetAuthors();
         }
 
@@ -134,7 +135,7 @@ namespace Pra.Books.Wpf
                 }
             }
 
-            DialogResult = true;
+            IsUpdated = true;
             PopulateAuthors();
             lstAuthors.SelectedValue = author.Id;
             LstAuthors_SelectionChanged(null, null);
@@ -158,7 +159,7 @@ namespace Pra.Books.Wpf
                         MessageBox.Show("We konden deze auteur niet verwijderen!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
-                    DialogResult = true;
+                    IsUpdated = true;
                     ClearControls();
                     PopulateAuthors();
                 }

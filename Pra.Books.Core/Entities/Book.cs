@@ -25,22 +25,33 @@ namespace Pra.Books.Core.Entities
 
         public int Year { get; set; }
 
-        public Guid AuthorId { get; set; }
-        public Guid PublisherId { get; set; }
+        [Write(false)]
+        public Author Author { get; set; }
 
-        public Book(string title, Guid authorId, Guid publisherId, int year)
+        [Write(false)]
+        public Publisher Publisher { get; set; }
+
+        public Guid AuthorId
         {
-            Id = Guid.NewGuid();
-            Title = title;
-            AuthorId = authorId;
-            PublisherId = publisherId;
-            Year = year;
+            get { return Author.Id; }
         }
 
-        internal Book(Guid id, string title, Guid authorId, Guid publisherId, int year)
-            : this(title, authorId, publisherId, year)
+        public Guid PublisherId
+        {
+            get { return Publisher.Id; }
+        }
+
+        public Book(string title, Author author, Publisher publisher, int year) : this(Guid.NewGuid(), title, year)
+        {
+            Author = author;
+            Publisher = publisher;
+        }
+
+        internal Book(Guid id, string title, int year)
         {
             Id = id;
+            Title = title;
+            Year = year;
         }
 
         public override string ToString()

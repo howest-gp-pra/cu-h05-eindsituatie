@@ -46,14 +46,17 @@ namespace Pra.Books.Core.Services
 
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
         {
-            // TODO: merge filter with composition query
+            // SQL query met join wegens compositie
+            string sql = "Select b.Id, b.Title, b.Year, a.*, p.* from books b ";
+            sql += "inner join Authors a on b.AuthorID = a.ID ";
+            sql += "inner join Publishers p on b.PublisherID = p.ID ";
 
-            string sql = "Select * from books";
+            // filter(s) toevoegen aan SQL query
             List<string> filters = new List<string>();
             if (author != null)
-                filters.Add("authorID = @AuthorID");
+                filters.Add($"authorID = '{author.Id}'");
             if (publisher != null)
-                filters.Add("publisherID = @PublisherID");
+                filters.Add($"publisherID = '{publisher.Id}'");
             if (filters.Count > 0)
                 sql += $" where {string.Join(" and ", filters)}";
             sql += " order by title";
@@ -62,23 +65,23 @@ namespace Pra.Books.Core.Services
             {
                 try
                 {
-                    connection.Open();
-                    return connection.Query<Book>(
-                        sql,
-                        new { AuthorID = author?.Id, PublisherID = publisher?.Id }
-                    );
+                    return connection.Query<Book, Author, Publisher, Book>(sql, (book, author, publisher) =>
+                    {
+                        book.Author = author;
+                        book.Publisher = publisher;
+                        return book;
+                    });
                 }
                 catch
                 {
                     return null;
                 }
             }
-
         }
 
         public bool IsAuthorInUse(Author author)
         {
-            string sql = $"select count(*) from books where authorId = {author.Id}";
+            string sql = $"select count(*) from books where authorId = '{author.Id}'";
             using (SqlConnection connection = new SqlConnection(conString))
             {
                 try
