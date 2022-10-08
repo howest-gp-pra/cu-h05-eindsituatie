@@ -107,6 +107,7 @@ namespace Pra.Books.Wpf
         {
             grpLeft.IsEnabled = true;
             grpRight.IsEnabled = false;
+            grpToOtherWindows.IsEnabled = true;
             btnSave.Visibility = Visibility.Hidden;
             btnCancel.Visibility = Visibility.Hidden;
         }
@@ -115,6 +116,7 @@ namespace Pra.Books.Wpf
         {
             grpLeft.IsEnabled = false;
             grpRight.IsEnabled = true;
+            grpToOtherWindows.IsEnabled = false;
             btnSave.Visibility = Visibility.Visible;
             btnCancel.Visibility = Visibility.Visible;
         }
