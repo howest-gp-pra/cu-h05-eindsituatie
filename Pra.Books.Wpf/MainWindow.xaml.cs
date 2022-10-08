@@ -57,8 +57,8 @@ namespace Pra.Books.Wpf
             cmbFilterAuthor.SelectedValuePath = "Id";
             cmbAuthor.SelectedValuePath = "Id";
 
-            cmbFilterAuthor.ItemsSource = bibService.GetAuthors();
-            cmbAuthor.ItemsSource = bibService.GetAuthors();
+            cmbFilterAuthor.ItemsSource = bibService.Authors;
+            cmbAuthor.ItemsSource = bibService.Authors;
         }
 
         private void PopulatePublishers()
@@ -71,8 +71,8 @@ namespace Pra.Books.Wpf
             cmbPublisher.SelectedValuePath = "Id";
             cmbPublisher.DisplayMemberPath = "Name";
 
-            cmbFilterPublisher.ItemsSource = bibService.GetPublishers();
-            cmbPublisher.ItemsSource = bibService.GetPublishers();
+            cmbFilterPublisher.ItemsSource = bibService.Publishers;
+            cmbPublisher.ItemsSource = bibService.Publishers;
         }
 
         private void ClearControls()

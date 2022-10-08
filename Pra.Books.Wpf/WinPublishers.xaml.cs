@@ -42,7 +42,7 @@ namespace Pra.Books.Wpf
         private void PopulatePublishers()
         {
             lstPublishers.SelectedValuePath = "Id";
-            lstPublishers.ItemsSource = bibService.GetPublishers();
+            lstPublishers.ItemsSource = bibService.Publishers;
         }
 
         private void ClearControls()

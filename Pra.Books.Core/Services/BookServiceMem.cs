@@ -9,6 +9,16 @@ namespace Pra.Books.Core.Services
         private List<Publisher> publishers;
         private List<Book> books;
 
+        public IEnumerable<Author> Authors
+        {
+            get { return authors.AsReadOnly(); }
+        }
+
+        public IEnumerable<Publisher> Publishers
+        {
+            get { return publishers.AsReadOnly(); }
+        }
+
         public BookServiceMem()
         {
             Seeding();
@@ -93,15 +103,15 @@ namespace Pra.Books.Core.Services
             return true;
         }
 
-        public bool AddBook(Book book)
-        {
-            books.Add(book);
-            return true;
-        }
-
         public bool AddPublisher(Publisher publisher)
         {
             publishers.Add(publisher);
+            return true;
+        }
+
+        public bool AddBook(Book book)
+        {
+            books.Add(book);
             return true;
         }
 
@@ -127,11 +137,6 @@ namespace Pra.Books.Core.Services
                 return false;
             books.Remove(book);
             return true;
-        }
-
-        public IEnumerable<Author> GetAuthors()
-        {
-            return authors.AsReadOnly();
         }
 
         public IEnumerable<Book> GetBooks(Author author = null, Publisher publisher = null)
@@ -170,11 +175,6 @@ namespace Pra.Books.Core.Services
                 }
             }
             return filtered;
-        }
-
-        public IEnumerable<Publisher> GetPublishers()
-        {
-            return publishers.AsReadOnly();
         }
 
         public bool IsAuthorInUse(Author author)

@@ -12,34 +12,40 @@ namespace Pra.Books.Core.Services
         private readonly string conString 
             = @"Data Source=(local)\SQLEXPRESS;Initial Catalog = PraBooks; Integrated security = true;";
 
-        public IEnumerable<Author> GetAuthors()
+        public IEnumerable<Author> Authors
         {
-            string sql = "select id, name from authors order by name";
-            using (SqlConnection connection = new SqlConnection(conString))
+            get
             {
-                try
+                string sql = "select id, name from authors order by name";
+                using (SqlConnection connection = new SqlConnection(conString))
                 {
-                    return connection.Query<Author>(sql);
-                }
-                catch
-                {
-                    return Enumerable.Empty<Author>();
+                    try
+                    {
+                        return connection.Query<Author>(sql);
+                    }
+                    catch
+                    {
+                        return Enumerable.Empty<Author>();
+                    }
                 }
             }
         }
 
-        public IEnumerable<Publisher> GetPublishers()
+        public IEnumerable<Publisher> Publishers
         {
-            string sql = "select id, name from publishers order by name";
-            using (SqlConnection connection = new SqlConnection(conString))
+            get
             {
-                try
+                string sql = "select id, name from publishers order by name";
+                using (SqlConnection connection = new SqlConnection(conString))
                 {
-                    return connection.Query<Publisher>(sql);
-                }
-                catch
-                {
-                    return Enumerable.Empty<Publisher>();
+                    try
+                    {
+                        return connection.Query<Publisher>(sql);
+                    }
+                    catch
+                    {
+                        return Enumerable.Empty<Publisher>();
+                    }
                 }
             }
         }
