@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Pra.Books.Core.Entities;
 using Pra.Books.Core.Services;
 using Pra.Books.Core.Interfaces;
@@ -39,14 +28,20 @@ namespace Pra.Books.Wpf
             ActivateLeft();
         }
 
-        private void PopulateBooks()
+        private void PopulateBooks(Book bookToSelect = null)
         {
             ClearControls();
+
+            lstBooks.SelectedValuePath = "Id";
             lstBooks.ItemsSource = null;
             Author author = (Author)cmbFilterAuthor.SelectedItem;
             Publisher publisher = (Publisher)cmbFilterPublisher.SelectedItem;
             lstBooks.ItemsSource = bibService.GetBooks(author, publisher);
-            lstBooks.SelectedValuePath = "Id";
+
+            if(bookToSelect != null)
+            {
+                lstBooks.SelectedValue = bookToSelect.Id;
+            }
         }
 
         private void PopulateAuthors()
@@ -67,9 +62,7 @@ namespace Pra.Books.Wpf
             cmbPublisher.ItemsSource = null;
 
             cmbFilterPublisher.SelectedValuePath = "Id";
-            cmbFilterPublisher.DisplayMemberPath = "Name";
             cmbPublisher.SelectedValuePath = "Id";
-            cmbPublisher.DisplayMemberPath = "Name";
 
             cmbFilterPublisher.ItemsSource = bibService.Publishers;
             cmbPublisher.ItemsSource = bibService.Publishers;
@@ -111,12 +104,15 @@ namespace Pra.Books.Wpf
 
         private void BtnClearFilterAuthor_Click(object sender, RoutedEventArgs e)
         {
-            // door selectie aan te passen wordt selection changed handler van combobox afgevuurd en zo ook de boekenlijst vernieuwd
+            // door selectie aan te passen wordt selection changed handler van combobox afgevuurd
+            // en zo uiteindelijk ook de boekenlijst automatisch vernieuwd
             cmbFilterAuthor.SelectedIndex = -1;
         }
 
         private void BtnClearFilterPublisher_Click(object sender, RoutedEventArgs e)
         {
+            // door selectie aan te passen wordt selection changed handler van combobox afgevuurd
+            // en zo uiteindelijk ook de boekenlijst automatisch vernieuwd
             cmbFilterPublisher.SelectedIndex = -1;
         }
 
@@ -161,62 +157,98 @@ namespace Pra.Books.Wpf
             string title = txtTitle.Text.Trim();
             if (title.Length == 0)
             {
-                MessageBox.Show("Je dient een titel op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtTitle.Focus();
+                ShowError("Je dient een titel op te geven!", "Fout", txtTitle);
                 return;
             }
 
-            if (cmbAuthor.SelectedItem == null)
-            {
-                MessageBox.Show("Je dient een auteur te selecteren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                cmbAuthor.Focus();
-                return;
-            }
             Author author = (Author)cmbAuthor.SelectedItem;
-            
-            if (cmbPublisher.SelectedItem == null)
+            if (author == null)
             {
-                MessageBox.Show("Je dient een uitgever te selecteren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                cmbPublisher.Focus();
+                ShowError("Je dient een auteur te selecteren!", "Fout", cmbAuthor);
                 return;
             }
+            
             Publisher publisher = (Publisher)cmbPublisher.SelectedItem;
+            if (publisher == null)
+            {
+                ShowError("Je dient een uitgeverij te selecteren!", "Fout", cmbPublisher);
+                return;
+            }
             
             bool yearOk = int.TryParse(txtYear.Text, out int year);
             if (!yearOk)
             {
-                MessageBox.Show("Je dient als jaar een getal in te voeren!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtYear.Focus();
+                ShowError("Je dient als jaar een getal in te voeren!", "Fout", txtYear);
                 return;
             }
 
-            Book book;
             if (isNew)
             {
-                book = new Book(title, author, publisher, year);
-                if (!bibService.AddBook(book))
-                {
-                    MessageBox.Show("We konden het nieuwe boek niet bewaren.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                AddBook(title, author, publisher, year);
             }
             else
             {
-                book = (Book)lstBooks.SelectedItem;
+                Book book = (Book)lstBooks.SelectedItem;
+                UpdateBook(book, title, author, publisher, year);
+            }
+        }
+
+        private void AddBook(string title, Author author, Publisher publisher, int year)
+        {
+            try
+            {
+                Book book = new Book(title, author, publisher, year);
+                if (!bibService.AddBook(book))
+                {
+                    throw new Exception("Nieuw boek kon niet bewaard worden");
+                }
+                RefreshBooksAfterUpdate(book);
+            }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit constructor Book indien een van de gegevens niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij aanmaken boek");
+            }
+        }
+
+        private void UpdateBook(Book book, string title, Author author, Publisher publisher, int year)
+        {
+            try
+            {
                 book.Title = title;
                 book.Author = author;
                 book.Publisher = publisher;
                 book.Year = year;
                 if (!bibService.UpdateBook(book))
                 {
-                    MessageBox.Show("We konden het boek niet wijzigen.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    throw new Exception("Wijziging boek kon niet bewaard worden");
                 }
+                RefreshBooksAfterUpdate(book);
             }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit de setter van een van de properties indien de waarde niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij wijzigen boek");
+            }
+        }
 
-            PopulateBooks();
-            lstBooks.SelectedValue = book.Id;
+        private void RefreshBooksAfterUpdate(Book updatedBook)
+        {
+            PopulateBooks(updatedBook);
             ActivateLeft();
+        }
+
+        private void ShowError(string message, string title, Control controlToFocus = null)
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            if(controlToFocus != null)
+            {
+                controlToFocus.Focus();
+            }
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
