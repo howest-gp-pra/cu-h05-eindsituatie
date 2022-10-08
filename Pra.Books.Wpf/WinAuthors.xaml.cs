@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Pra.Books.Core.Entities;
 using Pra.Books.Core.Services;
 using Pra.Books.Core.Interfaces;
+using System.Xml.Linq;
 
 
 namespace Pra.Books.Wpf
@@ -40,10 +41,15 @@ namespace Pra.Books.Wpf
             ActivateLeft();
         }
 
-        private void PopulateAuthors()
+        private void PopulateAuthors(Author authorToSelect = null)
         {
             lstAuthors.SelectedValuePath = "Id";
             lstAuthors.ItemsSource = bibService.Authors;
+
+            if(authorToSelect != null)
+            {
+                lstAuthors.SelectedValue = authorToSelect.Id;
+            }
         }
 
         private void ClearControls()
@@ -107,39 +113,69 @@ namespace Pra.Books.Wpf
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             string name = txtName.Text.Trim();
-            if (name.Length == 0)
-            {
-                MessageBox.Show("Je dient een naam op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtName.Focus();
-                return;
-            }
 
-            Author author;
             if (isNew)
             {
-                author = new Author(name);
-                if (!bibService.AddAuthor(author))
-                {
-                    MessageBox.Show("We konden de nieuwe auteur niet bewaren.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                AddAuthor(name);
             }
             else
             {
-                author = (Author)lstAuthors.SelectedItem;
-                author.Name = name;
+                Author author = (Author)lstAuthors.SelectedItem;
+                UpdateAuthor(author, name);
+            }
+        }
+
+        private void AddAuthor(string name)
+        {
+            try
+            {
+                Author author = new Author(name);
+                if (!bibService.AddAuthor(author))
+                {
+                    throw new Exception("Nieuwe auteur kon niet bewaard worden");
+                }
+                RefreshAuthorsAfterUpdate(author);
+            }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit constructor Author indien naam niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij aanmaken auteur");
+            }
+        }
+
+        private void UpdateAuthor(Author author, string newName)
+        {
+            try
+            {
+                author.Name = newName;
                 if (!bibService.UpdateAuthor(author))
                 {
-                    MessageBox.Show("We konden de auteur niet wijzigen.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    throw new Exception("Wijziging aan auteur kon niet bewaard worden");
                 }
+                RefreshAuthorsAfterUpdate(author);
             }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit setter property Name indien naam niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij aanpassen auteur");
+            }
+        }
 
+        private void RefreshAuthorsAfterUpdate(Author updatedAuthor)
+        {
             IsUpdated = true;
-            PopulateAuthors();
-            lstAuthors.SelectedValue = author.Id;
-            LstAuthors_SelectionChanged(null, null);
+            PopulateAuthors(updatedAuthor);
             ActivateLeft();
+        }
+
+        private void ShowError(string message, string title)
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            txtName.Focus();
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)

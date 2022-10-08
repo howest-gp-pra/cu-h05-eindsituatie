@@ -39,10 +39,15 @@ namespace Pra.Books.Wpf
             ActivateLeft();
         }
 
-        private void PopulatePublishers()
+        private void PopulatePublishers(Publisher publisherToSelect = null)
         {
             lstPublishers.SelectedValuePath = "Id";
             lstPublishers.ItemsSource = bibService.Publishers;
+
+            if(publisherToSelect != null)
+            {
+                lstPublishers.SelectedValue = publisherToSelect.Id;
+            }
         }
 
         private void ClearControls()
@@ -106,39 +111,69 @@ namespace Pra.Books.Wpf
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             string name = txtName.Text.Trim();
-            if (name.Length == 0)
-            {
-                MessageBox.Show("Je dient een naam op te geven!", "Fout", MessageBoxButton.OK, MessageBoxImage.Error);
-                txtName.Focus();
-                return;
-            }
-
-            Publisher publisher;
+            
             if (isNew)
             {
-                publisher = new Publisher(name);
-                if (!bibService.AddPublisher(publisher))
-                {
-                    MessageBox.Show("We konden de nieuwe uitgever niet bewaren.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                AddPublisher(name);
             }
             else
             {
-                publisher = (Publisher)lstPublishers.SelectedItem;
-                publisher.Name = name;
+                Publisher publisher = (Publisher)lstPublishers.SelectedItem;
+                UpdatePublisher(publisher, name);
+            }
+        }
+
+        private void AddPublisher(string name)
+        {
+            try
+            {
+                Publisher publisher = new Publisher(name);
+                if (!bibService.AddPublisher(publisher))
+                {
+                    throw new Exception("Nieuwe uitgeverij kon niet bewaard worden");
+                }
+                RefreshPublisherAfterUpdate(publisher);
+            }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit constructor Publisher indien naam niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij aanmaken uitgeverij");
+            }
+        }
+
+        private void UpdatePublisher(Publisher publisher, string newName)
+        {
+            try
+            {
+                publisher.Name = newName;
                 if (!bibService.UpdatePublisher(publisher))
                 {
-                    MessageBox.Show("We konden de uitgever niet wijzigen.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    throw new Exception("Wijziging aan uitgeverij kon niet bewaard worden");
                 }
+                RefreshPublisherAfterUpdate(publisher);
             }
+            catch (Exception ex)
+            {
+                // exceptie kan vanuit twee plaatsen optreden:
+                // 1: vanuit setter property Name indien naam niet geldig is (dus vanuit class lib)
+                // 2: de exceptie die hierboven opgegooid wordt indien het opslaan niet lukt
+                ShowError(ex.Message, "Fout bij aanpassen uitgeverij");
+            }
+        }
 
+        private void RefreshPublisherAfterUpdate(Publisher updatedPublisher)
+        {
             IsUpdated = true;
-            PopulatePublishers();
-            lstPublishers.SelectedValue = publisher.Id;
-            LstPublishers_SelectionChanged(null, null);
+            PopulatePublishers(updatedPublisher);
             ActivateLeft();
+        }
+
+        private void ShowError(string message, string title)
+        {
+            MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
+            txtName.Focus();
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
