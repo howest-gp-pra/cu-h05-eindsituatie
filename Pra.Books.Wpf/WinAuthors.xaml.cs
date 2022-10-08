@@ -48,6 +48,8 @@ namespace Pra.Books.Wpf
 
             if(authorToSelect != null)
             {
+                // eerst deselecteren om refresh te forceren indien zelfde auteur geselecteerd blijft
+                lstAuthors.UnselectAll();
                 lstAuthors.SelectedValue = authorToSelect.Id;
             }
         }

@@ -46,6 +46,8 @@ namespace Pra.Books.Wpf
 
             if(publisherToSelect != null)
             {
+                // eerst deselecteren om refresh te forceren indien zelfde uitgever geselecteerd blijft
+                lstPublishers.UnselectAll();
                 lstPublishers.SelectedValue = publisherToSelect.Id;
             }
         }

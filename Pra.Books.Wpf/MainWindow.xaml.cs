@@ -33,13 +33,15 @@ namespace Pra.Books.Wpf
             ClearControls();
 
             lstBooks.SelectedValuePath = "Id";
-            lstBooks.ItemsSource = null;
+            
             Author author = (Author)cmbFilterAuthor.SelectedItem;
             Publisher publisher = (Publisher)cmbFilterPublisher.SelectedItem;
             lstBooks.ItemsSource = bibService.GetBooks(author, publisher);
 
             if(bookToSelect != null)
             {
+                // eerst deselecteren om refresh te forceren indien zelfde boek geselecteerd blijft
+                lstBooks.UnselectAll();
                 lstBooks.SelectedValue = bookToSelect.Id;
             }
         }
