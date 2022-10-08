@@ -6,6 +6,8 @@ namespace Pra.Books.Core.Entities
     public class Book
     {
         private string title;
+        private Author author;
+        private Publisher publisher;
 
         [ExplicitKey]
         public Guid Id { get; internal set; }
@@ -26,10 +28,32 @@ namespace Pra.Books.Core.Entities
         public int Year { get; set; }
 
         [Write(false)]
-        public Author Author { get; set; }
+        public Author Author
+        { 
+            get { return author; }
+            set
+            {
+                if(value == null)
+                {
+                    throw new Exception("Auteur is verplicht op te geven");
+                }
+                author = value;
+            }
+        }
 
         [Write(false)]
-        public Publisher Publisher { get; set; }
+        public Publisher Publisher 
+        { 
+            get { return publisher; }
+            set
+            {
+                if(value == null)
+                {
+                    throw new Exception("Uitgeverij is verplicht op te geven");
+                }
+                publisher = value;
+            }
+        }
 
         public Guid AuthorId
         {
