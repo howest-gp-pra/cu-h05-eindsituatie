@@ -52,6 +52,15 @@ namespace Pra.Books.Wpf
             }
         }
 
+        private void RefreshSelectedAuthor()
+        {
+            Author author = (Author)lstAuthors.SelectedItem;
+            if(author != null)
+            {
+                PopulateAuthors(author);
+            }
+        }
+
         private void ClearControls()
         {
             txtName.Text = "";
@@ -107,7 +116,7 @@ namespace Pra.Books.Wpf
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             ActivateLeft();
-            LstAuthors_SelectionChanged(null, null);
+            RefreshSelectedAuthor();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -134,7 +143,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Nieuwe auteur kon niet bewaard worden");
                 }
-                RefreshAuthorsAfterUpdate(author);
+                SelectAuthorAfterUpdate(author);
             }
             catch (Exception ex)
             {
@@ -154,7 +163,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Wijziging aan auteur kon niet bewaard worden");
                 }
-                RefreshAuthorsAfterUpdate(author);
+                SelectAuthorAfterUpdate(author);
             }
             catch (Exception ex)
             {
@@ -165,7 +174,7 @@ namespace Pra.Books.Wpf
             }
         }
 
-        private void RefreshAuthorsAfterUpdate(Author updatedAuthor)
+        private void SelectAuthorAfterUpdate(Author updatedAuthor)
         {
             IsUpdated = true;
             PopulateAuthors(updatedAuthor);

@@ -50,6 +50,15 @@ namespace Pra.Books.Wpf
             }
         }
 
+        private void RefreshSelectedPublisher()
+        {
+            Publisher publisher = (Publisher)lstPublishers.SelectedItem;
+            if(publisher != null)
+            {
+                PopulatePublishers(publisher);
+            }
+        }
+
         private void ClearControls()
         {
             txtName.Text = "";
@@ -105,7 +114,7 @@ namespace Pra.Books.Wpf
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             ActivateLeft();
-            LstPublishers_SelectionChanged(null, null);
+            RefreshSelectedPublisher();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -132,7 +141,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Nieuwe uitgeverij kon niet bewaard worden");
                 }
-                RefreshPublisherAfterUpdate(publisher);
+                SelectPublisherAfterUpdate(publisher);
             }
             catch (Exception ex)
             {
@@ -152,7 +161,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Wijziging aan uitgeverij kon niet bewaard worden");
                 }
-                RefreshPublisherAfterUpdate(publisher);
+                SelectPublisherAfterUpdate(publisher);
             }
             catch (Exception ex)
             {
@@ -163,7 +172,7 @@ namespace Pra.Books.Wpf
             }
         }
 
-        private void RefreshPublisherAfterUpdate(Publisher updatedPublisher)
+        private void SelectPublisherAfterUpdate(Publisher updatedPublisher)
         {
             IsUpdated = true;
             PopulatePublishers(updatedPublisher);

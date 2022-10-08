@@ -44,28 +44,53 @@ namespace Pra.Books.Wpf
             }
         }
 
+        private void RefreshSelectedBook()
+        {
+            Book book = (Book)lstBooks.SelectedItem;
+            if(book != null)
+            {
+                PopulateBooks(book);
+            }
+        }
+
         private void PopulateAuthors()
         {
-            cmbFilterAuthor.ItemsSource = null;
-            cmbAuthor.ItemsSource = null;
+            Author filterAuthor = (Author)cmbFilterAuthor.SelectedItem;
 
             cmbFilterAuthor.SelectedValuePath = "Id";
             cmbAuthor.SelectedValuePath = "Id";
 
+            cmbFilterAuthor.ItemsSource = null;
+            cmbAuthor.ItemsSource = null;
+
             cmbFilterAuthor.ItemsSource = bibService.Authors;
             cmbAuthor.ItemsSource = bibService.Authors;
+
+            // herstel filter op auteur indien aanvankelijk reeds geselecteerd
+            if(filterAuthor != null)
+            {
+                cmbFilterAuthor.SelectedValue = filterAuthor.Id;
+            }
         }
 
         private void PopulatePublishers()
         {
-            cmbFilterPublisher.ItemsSource = null;
-            cmbPublisher.ItemsSource = null;
+            Publisher filterPublisher = (Publisher)cmbFilterPublisher.SelectedItem;
 
             cmbFilterPublisher.SelectedValuePath = "Id";
             cmbPublisher.SelectedValuePath = "Id";
 
+            cmbFilterPublisher.ItemsSource = null;
+            cmbPublisher.ItemsSource = null;
+
             cmbFilterPublisher.ItemsSource = bibService.Publishers;
             cmbPublisher.ItemsSource = bibService.Publishers;
+
+            // herstel filter op uitgeverij indien aanvankelijk reeds geselecteerd
+            if (filterPublisher != null)
+            {
+                cmbFilterPublisher.SelectedValue = filterPublisher.Id;
+            }
         }
 
         private void ClearControls()
@@ -149,7 +174,7 @@ namespace Pra.Books.Wpf
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
             ActivateLeft();
-            LstBooks_SelectionChanged(null, null);
+            RefreshSelectedBook();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
@@ -202,7 +227,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Nieuw boek kon niet bewaard worden");
                 }
-                RefreshBooksAfterUpdate(book);
+                SelectBookAfterUpdate(book);
             }
             catch (Exception ex)
             {
@@ -225,7 +250,7 @@ namespace Pra.Books.Wpf
                 {
                     throw new Exception("Wijziging boek kon niet bewaard worden");
                 }
-                RefreshBooksAfterUpdate(book);
+                SelectBookAfterUpdate(book);
             }
             catch (Exception ex)
             {
@@ -236,7 +261,7 @@ namespace Pra.Books.Wpf
             }
         }
 
-        private void RefreshBooksAfterUpdate(Book updatedBook)
+        private void SelectBookAfterUpdate(Book updatedBook)
         {
             PopulateBooks(updatedBook);
             ActivateLeft();
@@ -288,22 +313,8 @@ namespace Pra.Books.Wpf
             // code gaat hier verder van zodra winAuthors gesloten wordt
             if(winAuthors.IsUpdated)
             {
-                // bewaar geselecteerd boek en auteur
-                Guid? bookId = null;
-                if (lstBooks.SelectedItem != null)
-                    bookId = ((Book)lstBooks.SelectedItem).Id;
-                Guid? filterAuthorId = null;
-                if (cmbFilterAuthor.SelectedItem != null)
-                    filterAuthorId = ((Author)cmbFilterAuthor.SelectedItem).Id;
-
-                // vernieuw auteurs
                 PopulateAuthors();
-                // herstel selectie in filter
-                cmbFilterAuthor.SelectedValue = filterAuthorId;
-
-                // herselecteer huidig boek (zodat auteur vernieuwd wordt)
-                lstBooks.UnselectAll();
-                lstBooks.SelectedValue = bookId;
+                RefreshSelectedBook();
             }
         }
 
@@ -314,22 +325,8 @@ namespace Pra.Books.Wpf
             // code gaat hier verder van zodra winPublishers gesloten wordt
             if (winPublishers.IsUpdated)
             {
-                // bewaar geselecteerd boek en uitgeverij
-                Guid? bookId = null;
-                if (lstBooks.SelectedItem != null)
-                    bookId = ((Book)lstBooks.SelectedItem).Id;
-                Guid? filterPublisherId = null;
-                if (cmbFilterPublisher.SelectedItem != null)
-                    filterPublisherId = ((Publisher)cmbFilterPublisher.SelectedItem).Id;
-
-                // vernieuw uitgevers
                 PopulatePublishers();
-                // herstel selectie in filter
-                cmbFilterPublisher.SelectedValue = filterPublisherId;
-
-                // herselecteer huidig boek (zodat uitgeverij vernieuwd wordt)
-                lstBooks.UnselectAll();
-                lstBooks.SelectedValue = bookId;
+                RefreshSelectedBook();
             }
         }
     }
