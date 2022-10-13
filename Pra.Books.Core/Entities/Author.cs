@@ -38,5 +38,23 @@ namespace Pra.Books.Core.Entities
         {
             return name;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is not Author)
+            {
+                return false;
+            }
+            else
+            {
+                Author otherAuthor = (Author)obj;
+                return otherAuthor.Id == Id;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }
