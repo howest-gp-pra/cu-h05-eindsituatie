@@ -85,20 +85,13 @@ namespace Pra.Books.Core.Entities
 
         public override bool Equals(object obj)
         {
-            if (obj is not Book)
-            {
-                return false;
-            }
-            else
-            {
-                Book otherBook = (Book)obj;
-                return otherBook.Id == Id;
-            }
+            return obj is Book book &&
+                   Id.Equals(book.Id);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return HashCode.Combine(Id);
         }
     }
 }

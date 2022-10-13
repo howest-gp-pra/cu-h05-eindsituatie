@@ -41,20 +41,13 @@ namespace Pra.Books.Core.Entities
 
         public override bool Equals(object obj)
         {
-            if (obj is not Publisher)
-            {
-                return false;
-            }
-            else
-            {
-                Publisher otherPublisher = (Publisher)obj;
-                return otherPublisher.Id == Id;
-            }
+            return obj is Publisher publisher &&
+                   Id.Equals(publisher.Id);
         }
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return HashCode.Combine(Id);
         }
     }
 }
